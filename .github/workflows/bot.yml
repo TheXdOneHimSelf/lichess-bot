@@ -1,0 +1,50 @@
+name: Bot
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: '0 */5 * * *'
+
+concurrency:
+  group: "lichess-bot"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Setup engines
+      run: |      
+        # Set permissions for all engines
+        echo "🔧 Setting engine permissions..."
+        chmod +x engines/stockfish
+
+        # Verify engines
+        echo "📋 Listing engines:"
+        ls -la engines/
+
+    - name: Configure bot
+      run: |
+        sed -i "s/xxxxxxxxxxxxxxxxxxxxxx/${{ secrets.TOKEN }}/g" config.yml
+
+    - name: Launch bot
+      run: |
+        echo "Starting SKPS"
+        python -u lichess-bot.py &
+        wait
