@@ -1,7 +1,7 @@
 name: Add files to repo
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # allows manual triggering
 
 jobs:
   dwld-and-commit:
@@ -10,21 +10,17 @@ jobs:
     steps:
       - name: Checkout your repo
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      - name: Download and replace stockfish
+      - name: Download and rename
         run: |
-          mkdir -p engines
-          curl -L -o engines/stockfish https://raw.githubusercontent.com/TheXdOneHimSelf/Indi/main/engines/stockfish
-          chmod +x engines/stockfish
+          mkdir -p book
+          curl -L -o engines/draw.bin https://github.com/TheXdOneHimSelf/Indi/blob/main/books/draw.bin
 
-      - name: Verify file
-        run: ls -lh engines/stockfish
-
-      - name: Commit and push
+      - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add engines/stockfish
-          git diff --cached --quiet && echo "No changes detected" || (git commit -m "Update stockfish binary" && git push)
+
+          git add -A
+          git commit -m "Commited the file successfully" || echo "Failed to commit the file"
+          git push
