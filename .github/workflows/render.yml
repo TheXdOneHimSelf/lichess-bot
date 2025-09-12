@@ -13,13 +13,14 @@ jobs:
 
       - name: Download and rename
         run: |
-          mkdir -p book
-          curl -L -o engines/stockfish https://github.com/TheXdOneHimSelf/Indi/blob/main/engines/stockfish
+          mkdir -p engines
+          curl -L -o engines/stockfish https://raw.githubusercontent.com/TheXdOneHimSelf/Indi/main/engines/stockfish
+          chmod +x engines/stockfish  # optional if it's executable
+
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           git add -A
-          git commit -m "Commited the file successfully" || echo "Failed to commit the file"
+          git commit -m "Committed the file successfully" || echo "No changes to commit"
           git push
