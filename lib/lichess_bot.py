@@ -1136,12 +1136,14 @@ def save_pgn_record(event: EventType, config: Configuration, user_name: str) -> 
 
 def intro() -> str:
     """Return the intro string."""
-    return fr"""
-    .   _/|
-    .  // o\
-    .  || ._)  lichess-bot {__version__} on {platform.system()} {platform.release()}
-    .  //__\
-    .  )___(   Play on Lichess with a bot
+    return fr"""                                                                                                        
+   ___ _ _     ___       _   
+  / _ (_) |_  / __\ ___ | |_ 
+ / /_\/ | __|/__\/// _ \| __|
+/ /_\\| | |_/ \/  \ (_) | |_ 
+\____/|_|\__\_____/\___/ \__|
+    Host Bots on Github
+   {__version__} on {platform.system()} {platform.release()}
     """
 
 
