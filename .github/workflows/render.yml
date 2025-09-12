@@ -14,8 +14,7 @@ jobs:
       - name: Download and rename
         run: |
           mkdir -p engines
-          curl -L -o engines/stockfish https://raw.githubusercontent.com/TheXdOneHimSelf/Indi/main/engines/stockfish
-          chmod +x engines/stockfish  # optional if it's executable
+          curl -L -o engines/draw.bin https://raw.githubusercontent.com/TheXdOneHimSelf/Indi/blob/main/books/draw.bin
 
       - name: Commit
         run: |
