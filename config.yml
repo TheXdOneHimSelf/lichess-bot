@@ -13,41 +13,40 @@ engine:                            # Engine settings.
   ponder: true                     # Think on opponent's time.
 
   polyglot:
-    enabled: false                 # Activate polyglot book.
+    enabled: true                  # Activate polyglot book.
     book:
       standard:                    # List of book file paths for variant standard.
-        - engines/book1.bin
-        - engines/book2.bin
+        - engines/draw.bin
 #     atomic:                      # List of book file paths for variant atomic.
 #       - engines/atomicbook1.bin
 #       - engines/atomicbook2.bin
 #     etc.
 #     Use the same pattern for 'chess960', 'giveaway' (antichess), 'crazyhouse', 'horde', 'kingofthehill', 'racingkings' and '3check' as well.
     min_weight: 1                  # Does not select moves with weight below min_weight (min 0, max: 100 if normalization isn't "none" else 65535).
-    selection: "weighted_random"   # Move selection is one of "weighted_random", "uniform_random" or "best_move" (but not below the min_weight in the 2nd and 3rd case).
-    max_depth: 20                  # How many moves from the start to take from the book.
+    selection: "best_move"         # Move selection is one of "weighted_random", "uniform_random" or "best_move" (but not below the min_weight in the 2nd and 3rd case).
+    max_depth: 999                 # How many moves from the start to take from the book.
     normalization: "none"          # Normalization method for the book weights. One of "none", "sum", or "max".
 
   draw_or_resign:
-    resign_enabled: false          # Whether or not the bot should resign.
+    resign_enabled: true          # Whether or not the bot should resign.
     resign_score: -1000            # If the score is less than or equal to this value, the bot resigns (in cp).
     resign_for_egtb_minus_two: true # If true the bot will resign in positions where the online_egtb returns a wdl of -2.
-    resign_moves: 3                # How many moves in a row the score has to be below the resign value.
+    resign_moves: 4                # How many moves in a row the score has to be below the resign value.
     offer_draw_enabled: true       # Whether or not the bot should offer/accept draw.
     offer_draw_score: 0            # If the absolute value of the score is less than or equal to this value, the bot offers/accepts draw (in cp).
     offer_draw_for_egtb_zero: true # If true the bot will offer/accept draw in positions where the online_egtb returns a wdl of 0.
     offer_draw_moves: 10           # How many moves in a row the absolute value of the score has to be below the draw value.
-    offer_draw_pieces: 10          # Only if the pieces on board are less than or equal to this value, the bot offers/accepts draw.
+    offer_draw_pieces: 32          # Only if the pieces on board are less than or equal to this value, the bot offers/accepts draw.
 
   online_moves:
     max_out_of_book_moves: 10      # Stop using online opening books after they don't have a move for 'max_out_of_book_moves' positions. Doesn't apply to the online endgame tablebases.
-    max_retries: 2                 # The maximum amount of retries when getting an online move.
+    max_retries: 1                 # The maximum amount of retries when getting an online move.
     # max_depth: 10                # How many moves from the start to take from online books. Default is no limit.
     chessdb_book:
       enabled: false               # Whether or not to use chessdb book.
       min_time: 20                 # Minimum time (in seconds) to use chessdb book.
       max_time: 10800              # Maximum starting game time (in seconds) to use chessdb book.
-      move_quality: "good"         # One of "all", "good", "best".
+      move_quality: "best"         # One of "all", "good", "best".
       min_depth: 20                # Only for move_quality: "best".
     lichess_cloud_analysis:
       enabled: false               # Whether or not to use lichess cloud analysis.
@@ -66,7 +65,7 @@ engine:                            # Engine settings.
       sort: "winrate"              # One of "winrate", "games_played"
       min_games: 10                # Minimum number of times a move must have been played to be chosen.
     online_egtb:
-      enabled: false               # Whether or not to enable online endgame tablebases.
+      enabled: true                # Whether or not to enable online endgame tablebases.
       min_time: 20                 # Minimum time (in seconds) the bot must have to use online EGTBs.
       max_time: 10800              # Maximum starting game time (in seconds) the bot must have to use online EGTBs.
       max_pieces: 7                # Maximum number of pieces on the board to use endgame tablebases.
@@ -95,15 +94,15 @@ engine:                            # Engine settings.
 #   Hash: 256
 
   uci_options:                     # Arbitrary UCI options passed to the engine.
-    Move Overhead: 100             # Increase if your bot flags games too often.
+    Move Overhead: 250             # Increase if your bot flags games too often.
     Threads: 4                     # Max CPU threads the engine can use.
-    Hash: 512                      # Max memory (in megabytes) the engine can allocate.
-    SyzygyPath: "./syzygy/"        # Paths to Syzygy endgame tablebases that the engine reads.
+    Hash: 4096                     # Max memory (in megabytes) the engine can allocate.
+#   SyzygyPath: "./syzygy/"        # Paths to Syzygy endgame tablebases that the engine reads.
     UCI_ShowWDL: true              # Show the chance of the engine winning.
-#   go_commands:                   # Additional options to pass to the UCI go command.
-#     nodes: 1                     # Search so many nodes only.
-#     depth: 5                     # Search depth ply only.
-#     movetime: 1000               # Integer. Search exactly movetime milliseconds.
+    go_commands:                   # Additional options to pass to the UCI go command.
+      nodes: 4000000000            # Search so many nodes only.
+      depth: 5                     # Search depth ply only.
+      movetime: 1000               # Integer. Search exactly movetime milliseconds.
 
 # xboard_options:                  # Arbitrary XBoard options passed to the engine.
 #   cores: "4"
@@ -122,7 +121,7 @@ engine:                            # Engine settings.
 abort_time: 30                     # Time to abort a game in seconds when there is no activity.
 fake_think_time: false             # Artificially slow down the bot to pretend like it's thinking.
 rate_limiting_delay: 0             # Time (in ms) to delay after sending a move to prevent "Too Many Requests" errors.
-move_overhead: 2000                # Increase if your bot flags games too often.
+move_overhead: 200                 # Increase if your bot flags games too often.
 max_takebacks_accepted: 0          # The number of times to allow an opponent to take back a move in a game.
 quit_after_all_games_finish: false # If set to true, then pressing Ctrl-C to quit will only stop lichess-bot after all current games have finished.
 
@@ -133,11 +132,11 @@ correspondence:
   ponder: false                    # Ponder in correspondence games the bot is connected to.
 
 challenge:                         # Incoming challenges.
-  concurrency: 1                   # Number of games to play simultaneously.
+  concurrency: 3                   # Number of games to play simultaneously.
   sort_by: "best"                  # Possible values: "best" and "first".
   preference: "none"               # Possible values: "none", "human", "bot".
   accept_bot: true                 # Accepts challenges coming from other bots.
-  only_bot: false                  # Accept challenges by bots only.
+  only_bot: true                   # Accept challenges by bots only.
   max_increment: 20                # Maximum amount of increment to accept a challenge in seconds. The max is 180. Set to 0 for no increment.
   min_increment: 0                 # Minimum amount of increment to accept a challenge in seconds.
   max_base: 1800                   # Maximum amount of base time to accept a challenge in seconds. The max is 10800 (3 hours).
@@ -159,12 +158,12 @@ challenge:                         # Incoming challenges.
   time_controls:                   # Time controls to accept (bots are not allowed to play ultraBullet).
     - bullet
     - blitz
-    - rapid
-    - classical
+#   - rapid
+#   - classical
 #   - correspondence
   modes:                           # Game modes to accept.
     - casual                       # Unrated games.
-    - rated                        # Rated games - must comment if the engine doesn't try to win.
+#   - rated                        # Rated games - must comment if the engine doesn't try to win.
 # block_list:                      # List of users from which the challenges are always declined.
 #   - user1
 #   - user2
@@ -195,24 +194,33 @@ greeting:
                                    # "all" - every game is written to a single file named "{Bot name} games.pgn"
 
 matchmaking:
-  allow_matchmaking: false         # Set it to 'true' to challenge other bots.
-  allow_during_games: false        # Set it to 'true' to create challenges during long games.
+  allow_matchmaking: true         # Set it to 'true' to challenge other bots.
+  allow_during_games: true        # Set it to 'true' to create challenges during long games.
   challenge_variant: "random"      # If set to 'random', the bot will choose one variant from the variants enabled in 'challenge.variants'.
   challenge_timeout: 30            # Create a challenge after being idle for 'challenge_timeout' minutes. The minimum is 1 minute.
   challenge_initial_time:          # Initial time in seconds of the challenge (to be chosen at random).
+    - 30
     - 60
     - 180
+    - 300
+    - 600
+    - 1800
   challenge_increment:             # Increment in seconds of the challenge (to be chosen at random).
+    - 0
     - 1
     - 2
+    - 3
+    - 5
+    - 10
+    - 15
 #  challenge_days:                 # Days for correspondence challenge (to be chosen at random).
 #    - 1
 #    - 2
-# opponent_min_rating: 600         # Opponents rating should be above this value (600 is the minimum rating in lichess).
-# opponent_max_rating: 4000        # Opponents rating should be below this value (4000 is the maximum rating in lichess).
+  opponent_min_rating: 3000        # Opponents rating should be above this value (600 is the minimum rating in lichess).
+  opponent_max_rating: 4000        # Opponents rating should be below this value (4000 is the maximum rating in lichess).
   opponent_rating_difference: 300  # The maximum difference in rating between the bot's rating and opponent's rating.
-  rating_preference: "none"        # One of "none", "high", "low".
-  challenge_mode: "random"         # Set it to the mode in which challenges are sent. Possible options are 'casual', 'rated' and 'random'.
+  rating_preference: "high"        # One of "none", "high", "low".
+  challenge_mode: "casual"         # Set it to the mode in which challenges are sent. Possible options are 'casual', 'rated' and 'random'.
   challenge_filter: none           # If a bot declines a challenge, do not issue a similar challenge to that bot. Possible options are 'none', 'coarse', and 'fine'.
 # block_list:                      # The list of bots that will not be challenged
 #   - user1
