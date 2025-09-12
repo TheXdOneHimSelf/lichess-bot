@@ -76,7 +76,7 @@ class Conversation:
             self.send_reply(line, "Waiting 60 seconds...")
         elif cmd == "name":
             name = self.game.me.name
-            self.send_reply(line, f"{name} running {self.engine.name()} (lichess-bot v{self.version})")
+            self.send_reply(line, f"{name} running {self.engine.name()} (Gitbot v{self.version})")
         elif is_eval and (from_self or line.room == "spectator"):
             stats = self.engine.get_stats(for_chat=True)
             self.send_reply(line, ", ".join(stats))
