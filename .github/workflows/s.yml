@@ -1,0 +1,47 @@
+name: Download and Commit Latest Stockfish Dev
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'  # Runs daily at 03:00 UTC
+
+jobs:
+  download_and_commit_stockfish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Remove old Stockfish binary if it exists
+        run: rm -f engines/stockfish
+
+      - name: Query latest Stockfish dev release asset URL
+        id: get_url
+        run: |
+          url=$(curl -s https://api.github.com/repos/official-stockfish/Stockfish/releases \
+            | jq -r '[.[] | select(.prerelease==true and (.tag_name|type == "string") and (.tag_name|test("^stockfish-dev")))] | .[0].assets[] | select(.name|test("stockfish-ubuntu-x86-64-bmi2.tar$")).browser_download_url')
+          echo "ASSET_URL=$url" >> $GITHUB_ENV
+
+      - name: Download and extract Stockfish
+        run: |
+          curl -L "$ASSET_URL" -o stockfish.tar
+          tar -xf stockfish.tar
+
+      - name: Move and rename Stockfish binary to 'engines/stockfish'
+        run: |
+          mkdir -p engines
+          mv stockfish/stockfish-ubuntu-x86-64-bmi2 engines/stockfish
+          chmod +x engines/stockfish
+
+      - name: Clean up
+        run: rm -rf stockfish stockfish.tar
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add engines/stockfish
+          git diff --cached --quiet || (git commit -m "Update Stockfish binary to latest dev" && git push)
