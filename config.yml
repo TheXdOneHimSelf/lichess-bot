@@ -194,14 +194,11 @@ greeting:
                                    # "all" - every game is written to a single file named "{Bot name} games.pgn"
 
 matchmaking:
-  allow_matchmaking: true         # Set it to 'true' to challenge other bots.
-  allow_during_games: true        # Set it to 'true' to create challenges during long games.
+  allow_matchmaking: true          # Set it to 'true' to challenge other bots.
+  allow_during_games: true         # Set it to 'true' to create challenges during long games.
   challenge_variant: "random"      # If set to 'random', the bot will choose one variant from the variants enabled in 'challenge.variants'.
-  challenge_timeout: 1            # Create a challenge after being idle for 'challenge_timeout' minutes. The minimum is 1 minute.
+  challenge_timeout: 1             # Create a challenge after being idle for 'challenge_timeout' minutes. The minimum is 1 minute.
   challenge_initial_time:          # Initial time in seconds of the challenge (to be chosen at random).
-    - 30
-    - 60
-    - 180
     - 300
     - 600
     - 1800
@@ -216,11 +213,11 @@ matchmaking:
 #  challenge_days:                 # Days for correspondence challenge (to be chosen at random).
 #    - 1
 #    - 2
-  opponent_min_rating: 3000        # Opponents rating should be above this value (600 is the minimum rating in lichess).
+  opponent_min_rating: 2860        # Opponents rating should be above this value (600 is the minimum rating in lichess).
   opponent_max_rating: 4000        # Opponents rating should be below this value (4000 is the maximum rating in lichess).
   opponent_rating_difference: 200  # The maximum difference in rating between the bot's rating and opponent's rating.
   rating_preference: "high"        # One of "none", "high", "low".
-  challenge_mode: "random"         # Set it to the mode in which challenges are sent. Possible options are 'casual', 'rated' and 'random'.
+  challenge_mode: "rated"          # Set it to the mode in which challenges are sent. Possible options are 'casual', 'rated' and 'random'.
   challenge_filter: none           # If a bot declines a challenge, do not issue a similar challenge to that bot. Possible options are 'none', 'coarse', and 'fine'.
 # block_list:                      # The list of bots that will not be challenged
 #   - user1
@@ -229,16 +226,22 @@ matchmaking:
 #   - example.com/blocklist
   include_challenge_block_list: false  # Do not challenge bots in the challenge: block_list in addition to the matchmaking block list.
 
-# overrides:                       # List of overrides for the matchmaking specifications above. When a challenge is created, either the default specification above or one of the overrides will be randomly chosen.
-#   bullet_only_horde:             # Name of the override. Can be anything as long as each override has a unique name ("bullet_only_horde" and "easy_chess960" in these examples).
-#     challenge_variant: "horde"   # List of options to override. Only the options mentioned will change when making the challenge. The rest will follow the default matchmaking options above.
-#     challenge_initial_time:
-#       - 1
-#       - 2
-#     challenge_increment:
-#       - 0
-#       - 1
-#
+  overrides:                       # List of overrides for the matchmaking specifications above. When a challenge is created, either the default specification above or one of the overrides will be randomly chosen.
+    bullet:                        # Name of the override. Can be anything as long as each override has a unique name ("bullet_only_horde" and "easy_chess960" in these examples).
+      challenge_variant: "standard" # List of options to override. Only the options mentioned will change when making the challenge. The rest will follow the default matchmaking options above.
+      challenge_initial_time: 
+        - 30
+        - 60
+        - 180
+      challenge_increment:
+        - 0
+        - 1
+      opponent_min_rating: 3000        # Opponents rating should be above this value (600 is the minimum rating in lichess).
+      opponent_max_rating: 4000        # Opponents rating should be below this value (4000 is the maximum rating in lichess).
+      opponent_rating_difference: 200  # The maximum difference in rating between the bot's rating and opponent's rating.
+      rating_preference: "high"        # One of "none", "high", "low".
+      challenge_mode: "rated"          # Set it to the mode in which challenges are sent. Possible options are 'casual', 'rated' and 'random'.
+      challenge_filter: none           # If a bot declines a challenge, do not issue a similar challenge to that bot. Possible options are 'none', 'coarse', and 'fine'.
 #   easy_chess960:
 #     challenge_variant: "chess960"
 #     opponent_min_rating: 400
