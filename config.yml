@@ -39,18 +39,18 @@ engine:                            # Engine settings.
     offer_draw_pieces: 32          # Only if the pieces on board are less than or equal to this value, the bot offers/accepts draw.
 
   online_moves:
-    max_out_of_book_moves: 10      # Stop using online opening books after they don't have a move for 'max_out_of_book_moves' positions. Doesn't apply to the online endgame tablebases.
-    max_retries: 1                 # The maximum amount of retries when getting an online move.
+    max_out_of_book_moves: 1       # Stop using online opening books after they don't have a move for 'max_out_of_book_moves' positions. Doesn't apply to the online endgame tablebases.
+    max_retries: 2                 # The maximum amount of retries when getting an online move.
     # max_depth: 10                # How many moves from the start to take from online books. Default is no limit.
     chessdb_book:
-      enabled: false               # Whether or not to use chessdb book.
-      min_time: 20                 # Minimum time (in seconds) to use chessdb book.
+      enabled: true               # Whether or not to use chessdb book.
+      min_time: 10                 # Minimum time (in seconds) to use chessdb book.
       max_time: 10800              # Maximum starting game time (in seconds) to use chessdb book.
       move_quality: "best"         # One of "all", "good", "best".
-      min_depth: 20                # Only for move_quality: "best".
+      min_depth: 10                # Only for move_quality: "best".
     lichess_cloud_analysis:
       enabled: false               # Whether or not to use lichess cloud analysis.
-      min_time: 20                 # Minimum time (in seconds) the bot must have to use cloud analysis.
+      min_time: 10                 # Minimum time (in seconds) the bot must have to use cloud analysis.
       max_time: 10800              # Maximum starting game time (in seconds) the bot must have to use cloud analysis.
       move_quality: "best"         # One of "good", "best".
       max_score_difference: 50     # Only for move_quality: "good". The maximum score difference (in cp) between the best move and the other moves.
@@ -66,7 +66,7 @@ engine:                            # Engine settings.
       min_games: 10                # Minimum number of times a move must have been played to be chosen.
     online_egtb:
       enabled: true                # Whether or not to enable online endgame tablebases.
-      min_time: 20                 # Minimum time (in seconds) the bot must have to use online EGTBs.
+      min_time: 0                  # Minimum time (in seconds) the bot must have to use online EGTBs.
       max_time: 10800              # Maximum starting game time (in seconds) the bot must have to use online EGTBs.
       max_pieces: 7                # Maximum number of pieces on the board to use endgame tablebases.
       source: "lichess"            # One of "lichess", "chessdb".
@@ -94,15 +94,14 @@ engine:                            # Engine settings.
 #   Hash: 256
 
   uci_options:                     # Arbitrary UCI options passed to the engine.
-    Move Overhead: 250             # Increase if your bot flags games too often.
+    Move Overhead: 221             # Increase if your bot flags games too often.
     Threads: 4                     # Max CPU threads the engine can use.
     Hash: 4096                     # Max memory (in megabytes) the engine can allocate.
-#   SyzygyPath: "./syzygy/"        # Paths to Syzygy endgame tablebases that the engine reads.
     UCI_ShowWDL: true              # Show the chance of the engine winning.
-    go_commands:                   # Additional options to pass to the UCI go command.
-      nodes: 4000000000            # Search so many nodes only.
-      depth: 99                    # Search depth ply only.
-      movetime: 1000               # Integer. Search exactly movetime milliseconds.
+#   go_commands:                   # Additional options to pass to the UCI go command.
+#     nodes: 4000000000            # Search so many nodes only.
+#     depth: 99                    # Search depth ply only.
+#     movetime: 1000               # Integer. Search exactly movetime milliseconds.
 
 # xboard_options:                  # Arbitrary XBoard options passed to the engine.
 #   cores: "4"
